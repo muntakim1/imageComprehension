@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Image Comprehenser|ML BASED Comprehension </title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style>
+
+#circle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+	width: 150px;
+    height: 150px;	
+}
+
+.loader {
+    width: calc(100% - 0px);
+	height: calc(100% - 0px);
+	border: 8px solid #162534;
+	border-top: 8px solid #09f;
+	border-radius: 50%;
+	animation: rotate 5s linear infinite;
+}
+
+@keyframes rotate {
+100% {transform: rotate(360deg);}
+} 
+    </style>
+</head>
+  <body>
+    <div class="container">
+        <div class="jumbotron">
+            <a href='/' type="button" class="btn btn-outline-primary"><i class="fa fa-arrow-left" aria-hidden="true"></i> Home</a>
+            <h1 class="display-3">Image Comprehenser</h1>
+            <p class="lead">Select Your Image </p>
+          
+        </div>
+        <br>
+        <form action="/comprehension" method="POST" enctype="multipart/form-data">
+
+            <div class="form-group">
+              <label>Select image</label>
+              <div class="custom-file">
+                <input type="file" class="custom-file-input" name="image" id="image">
+                <br>
+               
+                <label class="custom-file-label" id="image-name" for="image">Select image...</label>
+              </div>
+              <label class="form-control-label" for="number">Number K values</label>
+              <input class="form-control" type="number" value={{k}} name="number" id="number">
+            </div>
+    
+            <button type="submit" class="btn btn-primary">Upload</button>
+    
+          </form>
+          
+          <div id="circle">
+            <div class="loader">
+              <div class="loader">
+                  <div class="loader">
+                     <div class="loader">
+          
+                     </div>
+                  </div>
+              </div>
+            </div>
+          </div> 
+          <div class="card-columns" id="columns">
+              <div class="card">
+                  <img class="card-img-top" id="main" alt="">
+                  <div class="card-body">
+                      <h4 class="card-title">Original Image</h4>
+                      <p class="card-text">with 16 billion colors</p>
+                  </div>
+              </div>
+              <div class="card">
+                  <img class="card-img-top" id='compressed' alt="">
+                  <div class="card-body">
+                      <h4 class="card-title">Compressed Image</h4>
+                      <p class="card-text">with {{k}} </p>
+                      <a href='/static/compressed/compressed-0.jpg' download="compressed-0.jpg" class="btn btn-primary"><i class="fa fa-download"></i> Download</a>
+                  </div>
+                  
+              </div>
+          </div>
+    </div>
+
+  
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript">
+        
+        $(document).ready(function(){
+            $("#circle").hide()
+            $("#columns").hide()
+        })
+        document.querySelector("#image").onchange = function(){
+            document.querySelector("#image-name").textContent = this.files[0].name;
+            }
+        var dir = "./static/compressed/compressed-0.jpg?"+new Date().getTime(); 
+        var dir_img = "./static/images/0.jpg?"+new Date().getTime();
+        setTimeout("changeImage()", 3000);
+
+  function changeImage(){
+      $("#columns").hide()
+      $("#circle").show()
+        $.ajax({
+            url: dir,
+
+            success: function (data) {
+               
+                $("#circle").hide()
+                $("#columns").show()
+                
+                $("#compressed").attr("src",dir);
+                $("#main").attr("src",dir_img);
+            }
+        });
+};
+    </script>
+</body>
+</html>
